@@ -34,21 +34,74 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Align(
-        alignment: Alignment.bottomCenter,
-        child: PhysicalModel(
-            color: Colors.transparent,
-            elevation: 15,
-            shadowColor: Colors.black,
+      body: ListView.builder(
+        itemBuilder: (context, index) {
+          return const ListTile(
+            title: Text('Salma'),
+          );
+        },
+        itemCount: 20,
+      ),
+      bottomNavigationBar: const BNB(),
+    );
+  }
+}
+
+class BNB extends StatelessWidget {
+  const BNB({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.bottomCenter,
             child: SizedBox(
               height: 100,
               width: double.infinity,
               child: CustomPaint(
                 painter: NavBarPainter(),
-                child: Container(),
+                size: const Size(double.infinity, 100),
+                child: Container(
+                  color: Colors.transparent,
+                ),
               ),
-            )),
-      ),
+            ),
+          ),
+        ),
+        Center(
+          heightFactor: 1.5,
+          child: FloatingActionButton(
+            onPressed: () {},
+            elevation: 5,
+            backgroundColor: Colors.blue,
+            child: const Icon(Icons.qr_code),
+          ),
+        ),
+        Container(
+          width: double.infinity,
+          height: 80,
+          padding: const EdgeInsets.only(top: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const [
+              Icon(
+                Icons.account_balance_wallet_outlined,
+                size: 35,
+              ),
+              SizedBox(
+                width: 1,
+              ),
+              Icon(
+                Icons.airplane_ticket_outlined,
+                size: 35,
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 }
@@ -58,7 +111,7 @@ class NavBarPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
       ..strokeWidth = 1
-      ..color = Colors.blue
+      ..color = Colors.white
       ..style = PaintingStyle.fill;
 
     Path path = Path();
@@ -75,10 +128,13 @@ class NavBarPainter extends CustomPainter {
         size.width * .7, size.height * .275);
 
     path.lineTo(size.width, size.height * .275);
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
-    path.close();
 
+    path.lineTo(size.width, size.height);
+
+    path.lineTo(0, size.height);
+
+    path.close();
+    canvas.drawShadow(path, Colors.black, 2.0, true);
     canvas.drawPath(path, paint);
   }
 
